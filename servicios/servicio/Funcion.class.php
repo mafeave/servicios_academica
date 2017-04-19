@@ -48,6 +48,9 @@ class Funcion {
 	function servicioConsultarPensums () {
 		include_once ($this->ruta . "funcion/servicioConsultarPensums.php");
 	}
+	function consultarPeriodoAnterior () {
+		include_once ($this->ruta . "funcion/consultarPeriodoAnterior.php");
+	}
 	function procesarAjax() {
 		include_once ($this->ruta . "funcion/procesarAjax.php");
 	}
@@ -112,6 +115,9 @@ class Funcion {
 					break;
 				case 'servicioConsultarPensums' :
 					$resultado = $this->servicioConsultarPensums ();
+					break;
+				case 'consultarPeriodoAnterior' :
+					$resultado = $this->consultarPeriodoAnterior ();
 					break;
 
 			}

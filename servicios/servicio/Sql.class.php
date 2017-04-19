@@ -164,6 +164,15 @@ class Sql extends \Sql {
 				$cadenaSql .= " order by PEN_NRO ";
 				break;
 
+			case 'buscarPeriodoAnterior' :
+				$cadenaSql = "SELECT ";
+				$cadenaSql .= "APE_ANO, ";
+				$cadenaSql .= "APE_PER ";
+				$cadenaSql .= "FROM MNTAC.ACASPERI ";
+				$cadenaSql .= "WHERE ";
+				$cadenaSql .= "APE_ESTADO='P'";
+				break;
+
 		}
 		return $cadenaSql;
 	}
