@@ -51,6 +51,9 @@ class Funcion {
 	function consultarPeriodoAnterior () {
 		include_once ($this->ruta . "funcion/consultarPeriodoAnterior.php");
 	}
+	function servicioPorcentajeCursado () {
+		include_once ($this->ruta . "funcion/servicioPorcentajeCursado.php");
+	}
 	function procesarAjax() {
 		include_once ($this->ruta . "funcion/procesarAjax.php");
 	}
@@ -118,6 +121,9 @@ class Funcion {
 					break;
 				case 'consultarPeriodoAnterior' :
 					$resultado = $this->consultarPeriodoAnterior ();
+					break;
+				case 'servicioPorcentajeCursado' :
+					$resultado = $this->servicioPorcentajeCursado ();
 					break;
 
 			}

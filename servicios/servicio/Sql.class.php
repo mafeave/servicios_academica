@@ -173,6 +173,13 @@ class Sql extends \Sql {
 				$cadenaSql .= "APE_ESTADO='P'";
 				break;
 
+			case 'creditosCursados':
+				$cadenaSql="SELECT ins_creditos_aprobados,  ";
+				$cadenaSql.="ins_parametros_plan ";
+				$cadenaSql.="FROM sga_carga_inscripciones ";
+				$cadenaSql.="WHERE ins_est_cod=".$variable['codigo'];
+				break;
+
 		}
 		return $cadenaSql;
 	}
