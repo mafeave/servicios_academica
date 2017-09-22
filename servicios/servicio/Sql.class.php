@@ -30,6 +30,19 @@ class Sql extends \Sql {
 			 * Clausulas específicas
 			 */
 
+			case 'buscarCoordinador' :
+				$cadenaSql = "SELECT ";
+				$cadenaSql .= "CRA_EMP_NRO_IDEN AS ID_COORDINADOR, ";
+				$cadenaSql .= "CRA_COD AS CODIGO_CARRERA, ";
+				$cadenaSql .= "CRA_NOMBRE AS CARRERA, ";
+				$cadenaSql .= "CONCAT (DOC_NOMBRE , CONCAT(' ', DOC_APELLIDO)) AS COORDINADOR ";
+				$cadenaSql .= "FROM MNTAC.ACCRA, MNTAC.ACDOCENTE ";
+				$cadenaSql .= "WHERE ";
+				$cadenaSql .= "DOC_NRO_IDEN=CRA_EMP_NRO_IDEN ";
+				$cadenaSql .= "AND CRA_COD =".$variable;
+				break;
+
+
 			case 'buscarEstudiantes' :
 				$cadenaSql = "SELECT ";
 				$cadenaSql .= "EST_COD, ";
@@ -47,14 +60,12 @@ class Sql extends \Sql {
 					$cadenaSql .= " AND EST_CRA_COD=".$variable;
 				}
 				$cadenaSql .= " ORDER BY EST_COD ";
-				//echo $cadenaSql;
 				break;
 
 			case 'buscarDocentes' :
 				$cadenaSql = "SELECT ";
 				$cadenaSql .= "DOC_NRO_IDEN, ";
-				$cadenaSql .= "DOC_NOMBRE, ";
-				$cadenaSql .= "DOC_APELLIDO ";
+				$cadenaSql .= "CONCAT (DOC_NOMBRE , CONCAT(' ', DOC_APELLIDO)) AS Nombre ";
 				$cadenaSql .= "FROM MNTAC.ACDOCENTE ";
 				$cadenaSql .= "WHERE ";
 				$cadenaSql .= "DOC_ESTADO_REGISTRO='A' ";
@@ -67,7 +78,7 @@ class Sql extends \Sql {
 				//echo $cadenaSql;
 				break;
 
-			case 'buscarCarreras' :
+			/*case 'buscarCarreras' :
 				$cadenaSql = "SELECT ";
 				$cadenaSql .= "CRA_COD CODIGO, ";
 				$cadenaSql .= "CRA_NOMBRE NOMBRE, ";
@@ -86,8 +97,29 @@ class Sql extends \Sql {
 	 				}
  				}
  				$cadenaSql .= " order by CRA_NOMBRE ";
- 				//echo $cadenaSql;
-				break;
+ 				echo $cadenaSql;
+				break;*/
+
+				case 'buscarCarreras' :
+					$cadenaSql = "SELECT DISTINCT ";
+					$cadenaSql .= "CRA_NOMBRE AS NOMBRE, ";
+					$cadenaSql .= "first_value(CRA_COD) over (partition by CRA_NOMBRE order by CRA_COD asc) AS CODIGO ";
+					$cadenaSql .= "FROM MNTAC.ACCRA, ";
+					$cadenaSql .= "MNTAC.ACTIPCRA ";
+					$cadenaSql .= "WHERE ";
+					$cadenaSql .= "CRA_TIP_CRA=TRA_COD ";
+
+					if($variable){
+						if($variable['tipo']!='' ){
+							$cadenaSql .= " AND TRA_NIVEL= '".$variable['tipo']."'";
+						}
+						if($variable['codigo']!='' ){
+							$cadenaSql .= " AND CRA_COD=".$variable['codigo'];
+						}
+					}
+					$cadenaSql .= " order by CRA_NOMBRE ";
+					echo $cadenaSql;
+					break;
 
 			case 'buscarPromedio' :
 				$cadenaSql = "SELECT ";
@@ -113,7 +145,31 @@ class Sql extends \Sql {
 				$cadenaSql .= " AND REG_EST_COD=EST_COD";
 				$cadenaSql .= " AND ACEST.EST_CRA_COD=ACCRA.CRA_COD";
 				$cadenaSql .= " AND ACTIPCRA.TRA_COD=ACCRA.CRA_TIP_CRA";
+				echo $cadenaSql;
 				break;
+
+				case 'buscarPromedio2' :
+					$cadenaSql = "SELECT ";
+
+					$cadenaSql .= " EST_NOMBRE AS NOMBRE, ";
+					$cadenaSql .= " EST_CRA_COD, ";
+					$cadenaSql .= " Fa_Promedio_Nota(".$variable['codigo'].") AS PROMEDIO, ";
+
+					$cadenaSql .= " EST_ESTADO_EST, ";//estado: j,a,..
+					$cadenaSql .= " CRA_TIP_CRA, ";
+					$cadenaSql .= " TRA_NOMBRE, ";
+					$cadenaSql .= " TRA_NIVEL ";
+
+					$cadenaSql .= " FROM MNTAC.ACEST, ";
+					$cadenaSql .= " MNTAC.ACCRA ACCRA, ";
+					$cadenaSql .= " MNTAC.ACTIPCRA ACTIPCRA ";
+
+					$cadenaSql .= " WHERE EST_COD =".$variable['codigo'];
+					$cadenaSql .= " AND ACEST.EST_CRA_COD=ACCRA.CRA_COD";
+					$cadenaSql .= " AND ACTIPCRA.TRA_COD=ACCRA.CRA_TIP_CRA";
+
+					break;
+
 
 			case 'buscarAsignaturas' :
 				$cadenaSql = "SELECT ";
@@ -152,6 +208,27 @@ class Sql extends \Sql {
 				$cadenaSql .= "APE_ESTADO='X'";
 				break;
 
+			case 'buscarPeriodoAnterior' :
+				$cadenaSql = "SELECT ";
+				$cadenaSql .= "APE_ANO, ";
+				$cadenaSql .= "APE_PER ";
+				$cadenaSql .= "FROM MNTAC.ACASPERI ";
+				$cadenaSql .= "WHERE ";
+				$cadenaSql .= "APE_ESTADO='P'";
+				break;
+
+			case 'buscarAsignatura' :
+				$cadenaSql = "SELECT ";
+				$cadenaSql .= "ASI_COD, ";
+				$cadenaSql .= "ASI_NOMBRE, ";
+				$cadenaSql .= "PEN_CRE ";
+				$cadenaSql .= "FROM MNTAC.ACPEN, ";
+				$cadenaSql .= "MNTAC.ACASI ";
+				$cadenaSql .= "WHERE ";
+				$cadenaSql .= "PEN_ASI_COD=ASI_COD ";
+				$cadenaSql .= "AND ASI_COD=".$_REQUEST['asignatura'];
+				break;
+
 			case 'buscarPensums' :
 				$cadenaSql = "SELECT ";
 				$cadenaSql .= "DISTINCT PEN_NRO ";
@@ -164,13 +241,16 @@ class Sql extends \Sql {
 				$cadenaSql .= " order by PEN_NRO ";
 				break;
 
-			case 'buscarPeriodoAnterior' :
-				$cadenaSql = "SELECT ";
-				$cadenaSql .= "APE_ANO, ";
-				$cadenaSql .= "APE_PER ";
-				$cadenaSql .= "FROM MNTAC.ACASPERI ";
-				$cadenaSql .= "WHERE ";
-				$cadenaSql .= "APE_ESTADO='P'";
+			case 'buscarPlanEstudio':
+				$cadenaSql="SELECT est_cra_cod, est_pen_nro ";
+				$cadenaSql.="FROM acest ";
+				$cadenaSql.="WHERE est_cod=".$variable['codigo'];
+				break;
+
+			case 'buscarCreditosPlan':
+				$cadenaSql="SELECT PLAN_CREDITOS ";
+				$cadenaSql.="FROM acplanestudio ";
+				$cadenaSql.="WHERE PLAN_PEN_NRO=".$variable;
 				break;
 
 			case 'creditosCursados':
@@ -180,7 +260,18 @@ class Sql extends \Sql {
 				$cadenaSql.="WHERE ins_est_cod=".$variable['codigo'];
 				break;
 
+
+			case 'buscarEspaciosAprobados':
+				$cadenaSql="SELECT not_asi_cod, not_cra_cod, not_cred, not_cea_cod";
+				$cadenaSql.=" FROM acnot";
+				$cadenaSql.=" WHERE not_est_cod =".$variable['codigo'];
+				$cadenaSql.=" AND not_cra_cod= (SELECT est_cra_cod FROM acest WHERE est_cod=".$variable['codigo'].")";
+				$cadenaSql.=" AND not_nota >= '30'";
+				$cadenaSql.=" AND not_est_reg like '%A%'";
+				break;
+
 		}
+
 		return $cadenaSql;
 	}
 }

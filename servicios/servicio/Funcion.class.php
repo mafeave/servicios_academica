@@ -27,6 +27,9 @@ class Funcion {
 	var $miRecursoDB;
 	var $crypto;
 
+	function servicioConsultarCoordinador () {
+		include_once ($this->ruta . "funcion/servicioConsultarCoordinador.php");
+	}
 	function servicioConsultarEstudiantes () {
 		include_once ($this->ruta . "funcion/servicioConsultarEstudiantes.php");
 	}
@@ -48,11 +51,11 @@ class Funcion {
 	function servicioConsultarPensums () {
 		include_once ($this->ruta . "funcion/servicioConsultarPensums.php");
 	}
-	function consultarPeriodoAnterior () {
-		include_once ($this->ruta . "funcion/consultarPeriodoAnterior.php");
-	}
 	function servicioPorcentajeCursado () {
 		include_once ($this->ruta . "funcion/servicioPorcentajeCursado.php");
+	}
+	function consultarPeriodoAnterior () {
+		include_once ($this->ruta . "funcion/consultarPeriodoAnterior.php");
 	}
 	function procesarAjax() {
 		include_once ($this->ruta . "funcion/procesarAjax.php");
@@ -81,6 +84,14 @@ class Funcion {
 		echo "<script>document.title = '" . $status . " - " .  $status_message . "';</script>";
 		$json_response = json_encode ( $data, JSON_PRETTY_PRINT );
 		echo "<json>" . $json_response . "<json>";
+
+		/*
+			 ob_clean();
+			 //echo "<script>document.title = '" . $status . " - " .  $status_message . "';</script>";
+			 $json_response = json_encode ( $data, JSON_PRETTY_PRINT );
+			 echo $json_response;
+			 exit;
+		 */
 
 	}
 	function action() {
@@ -119,11 +130,14 @@ class Funcion {
 				case 'servicioConsultarPensums' :
 					$resultado = $this->servicioConsultarPensums ();
 					break;
+				case 'servicioPorcentajeCursado' :
+					$resultado = $this->servicioPorcentajeCursado ();
+					break;
 				case 'consultarPeriodoAnterior' :
 					$resultado = $this->consultarPeriodoAnterior ();
 					break;
-				case 'servicioPorcentajeCursado' :
-					$resultado = $this->servicioPorcentajeCursado ();
+				case 'servicioConsultarCoordinador' :
+					$resultado = $this->servicioConsultarCoordinador ();
 					break;
 
 			}
