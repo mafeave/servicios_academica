@@ -81,17 +81,11 @@ class Funcion {
 
 	function deliver_response($status,$status_message,$data){
 
-		echo "<script>document.title = '" . $status . " - " .  $status_message . "';</script>";
-		$json_response = json_encode ( $data, JSON_PRETTY_PRINT );
-		echo "<json>" . $json_response . "<json>";
-
-		/*
-			 ob_clean();
-			 //echo "<script>document.title = '" . $status . " - " .  $status_message . "';</script>";
-			 $json_response = json_encode ( $data, JSON_PRETTY_PRINT );
-			 echo $json_response;
-			 exit;
-		 */
+		 ob_clean();
+		 //echo "<script>document.title = '" . $status . " - " .  $status_message . "';</script>";
+		 $json_response = json_encode ( $data, JSON_PRETTY_PRINT );
+		 echo $json_response;
+		 exit;
 
 	}
 	function action() {
