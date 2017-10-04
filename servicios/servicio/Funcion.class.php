@@ -36,6 +36,9 @@ class Funcion {
 	function servicioConsultarDocentes () {
 		include_once ($this->ruta . "funcion/servicioConsultarDocentes.php");
 	}
+	function servicioConsultarDocentesTG () {
+		include_once ($this->ruta . "funcion/servicioConsultarDocentesTG.php");
+	}
 	function servicioConsultarCarreras () {
 		include_once ($this->ruta . "funcion/servicioConsultarCarreras.php");
 	}
@@ -108,6 +111,9 @@ class Funcion {
 					break;
 				case 'servicioConsultarDocentes' :
 					$resultado = $this->servicioConsultarDocentes ();
+					break;
+				case 'servicioConsultarDocentesTG' :
+					$resultado = $this->servicioConsultarDocentesTG ();
 					break;
 				case 'servicioConsultarCarreras' :
 					$resultado = $this->servicioConsultarCarreras ();

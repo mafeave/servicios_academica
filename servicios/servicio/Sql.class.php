@@ -62,6 +62,15 @@ class Sql extends \Sql {
 				$cadenaSql .= " ORDER BY EST_COD ";
 				break;
 
+			case 'buscarDocentesTG' :
+				$cadenaSql=" SELECT DIR_NRO_IDEN, ";
+				$cadenaSql.= "CONCAT (DIR_NOMBRE , CONCAT(' ', DIR_APELLIDO)) AS Nombre ";
+				$cadenaSql.=" FROM MNTAC.ACDIRECTORGRADO";
+				$cadenaSql.=" WHERE DIR_ESTADO='A'";
+				$cadenaSql.= " ORDER BY Nombre ";
+				//echo $cadenaSql;
+				break;
+
 			case 'buscarDocentes' :
 				$cadenaSql = "SELECT ";
 				$cadenaSql .= "DOC_NRO_IDEN, ";
