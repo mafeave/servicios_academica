@@ -30,17 +30,25 @@ class Sql extends \Sql {
 			 * Clausulas específicas
 			 */
 
-			case 'buscarCoordinador' :
-				$cadenaSql = "SELECT ";
-				$cadenaSql .= "CRA_EMP_NRO_IDEN AS ID_COORDINADOR, ";
-				$cadenaSql .= "CRA_COD AS CODIGO_CARRERA, ";
-				$cadenaSql .= "CRA_NOMBRE AS CARRERA, ";
-				$cadenaSql .= "CONCAT (DOC_NOMBRE , CONCAT(' ', DOC_APELLIDO)) AS COORDINADOR ";
-				$cadenaSql .= "FROM MNTAC.ACCRA, MNTAC.ACDOCENTE ";
-				$cadenaSql .= "WHERE ";
-				$cadenaSql .= "DOC_NRO_IDEN=CRA_EMP_NRO_IDEN ";
-				$cadenaSql .= "AND CRA_COD =".$variable;
-				break;
+			 case 'buscarCoordinador' :
+ 				$cadenaSql = "SELECT ";
+ 				$cadenaSql .= "CRA_EMP_NRO_IDEN AS ID_COORDINADOR, ";
+ 				$cadenaSql .= "CRA_COD AS CODIGO_CARRERA, ";
+ 				$cadenaSql .= "CRA_NOMBRE AS CARRERA, ";
+ 				$cadenaSql .= "CONCAT (DOC_NOMBRE , CONCAT(' ', DOC_APELLIDO)) AS COORDINADOR ";
+ 				$cadenaSql .= "FROM MNTAC.ACCRA, MNTAC.ACDOCENTE ";
+ 				$cadenaSql .= "WHERE ";
+ 				$cadenaSql .= "DOC_NRO_IDEN=CRA_EMP_NRO_IDEN ";
+ 				if($variable){
+ 					if(isset($variable['carrera']) && $variable['carrera']!='' ){
+ 						$cadenaSql .= "AND CRA_COD =".$variable['carrera'];
+ 					}
+ 					if(isset($variable['identificacion'])&& $variable['identificacion']!='' ){
+ 						$cadenaSql .= " AND CRA_EMP_NRO_IDEN='".$variable['identificacion']."'";
+ 					}
+ 				}
+
+ 				break;
 
 			case 'buscarEstudiante' :
 				$cadenaSql = "SELECT ";
