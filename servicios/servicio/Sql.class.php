@@ -42,6 +42,16 @@ class Sql extends \Sql {
 				$cadenaSql .= "AND CRA_COD =".$variable;
 				break;
 
+			case 'buscarEstudiante' :
+				$cadenaSql = "SELECT ";
+				$cadenaSql .= "EST_COD CODIGO, ";
+				$cadenaSql .= "EST_NOMBRE NOMBRE, ";
+				$cadenaSql .= "EST_ESTADO_EST ESTADO, ";
+				$cadenaSql .= "EST_CRA_COD CARRERA ";
+				$cadenaSql .= "FROM MNTAC.ACEST ";
+				$cadenaSql .= "WHERE ";
+				$cadenaSql .= "EST_COD=".$variable;
+				break;
 
 			case 'buscarEstudiantes' :
 				$cadenaSql = "SELECT ";
